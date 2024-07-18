@@ -21,7 +21,8 @@ const config = {
 			colors: {
                 // 'app': '#0442ED',
                 // 'app': '#2222FF',
-                'app': '#0052FF',
+                // 'app': '#0052FF',
+                'app': '#3B82F6',
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",

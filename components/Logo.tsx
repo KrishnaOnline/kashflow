@@ -6,9 +6,9 @@ import Image from "next/image";
 function Logo() {
 	return (
         <div>
-            <a href="/" className="flex items-center gap-2">
-                <Image src={LogoImg} className="h-16 w-16" alt="logo"/>
-                {/* <p>ashFlow</p> */}
+            <a href="/" className="flex items-center gap-0">
+                <Image src={LogoImg} className="/*hidden md:block*/ h-[25px] md:h-[40px] w-fit" alt="logo"/>
+                <p className="text-xl md:text-2xl font-semibold text-app">ashFlow</p>
             </a>
         </div>
     );
