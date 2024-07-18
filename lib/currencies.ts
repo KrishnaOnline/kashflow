@@ -1,7 +1,9 @@
 export const Currencies = [
-    {value: "Rupee", label: "₹ Rupee", locale: "en-IN"},
-    {value: "Dollar", label: "$ Dollar", locale: "en-US"},
-    {value: "Euro", label: "€ Euro", locale: "de-DE"}
+    {value: "INR", label: "₹ Rupee", locale: "en-IN"},
+    {value: "USD", label: "$ Dollar", locale: "en-US"},
+    {value: "EUR", label: "€ Euro", locale: "de-DE"}
 ];
 
-export type Currency = (typeof Currencies)[0];
+// export type Currency = (typeof Currencies)[0];
+// export type Currency = string;
+// export type Currency = typeof Currencies[number]['value'];

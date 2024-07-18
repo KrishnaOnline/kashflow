@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         const user = await currentUser();
         if(!user) {
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
             userSettings = await prisma.userSettings.create({
                 data: {
                     userId: user.id,
-                    currency: "INR",
+                    // currency: "INR",
                 }
             })
         }

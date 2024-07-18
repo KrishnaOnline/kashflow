@@ -15,7 +15,6 @@ datasource db {
 
 model UserSettings {
     userId   String   @id
-    currency Currency @default(INR)
 }
 
 model Category {
@@ -61,8 +60,8 @@ model YearHistory {
     @@id([month, year, userId])
 }
 
-enum Currency {
-    INR
-    USD
-    EUR
-}
+// enum Currency {
+//     INR
+//     USD
+//     EUR
+// }
