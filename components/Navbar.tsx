@@ -42,9 +42,14 @@ function LargeScreenNavabar() {
                         ))}
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <ThemeSwitcher/>
-                    <UserButton/>
+                <div className="flex items-center gap-10">
+                    <Link href={"https://krishnavamshi-portfolio.netlify.app/"} target="_blank">
+                        <Button className="text-lg">About</Button>
+                    </Link>
+                    <div className="flex items-center gap-3">
+                        <ThemeSwitcher/>
+                        <UserButton/>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -61,7 +66,7 @@ function MobileNavbar() {
                     <div className="flex gap-2 items-center">
                         <SheetTrigger asChild>
                             <Button variant={"ghost"} size={"icon"}>
-                                <IoMenuOutline className="text-4xl"/>
+                                <IoMenuOutline className="text-3xl"/>
                             </Button>
                         </SheetTrigger>
                         <Logo/>
@@ -85,9 +90,14 @@ function MobileNavbar() {
                 </Sheet>
                 <div className="flex h-[70px] min-h-[60px] items-center gap-x-32">
                     {/* <Logo/> */}
-                    <div className="flex items-center gap-2">
-                        <ThemeSwitcher/>
-                        <UserButton/>
+                    <div className="flex items-center gap-8">
+                        <Link href={"https://krishnavamshi-portfolio.netlify.app/"} target="_blank">
+                            <Button className="">About</Button>
+                        </Link>
+                        <div className="flex items-center gap-2">
+                            <ThemeSwitcher/>
+                            <UserButton/>
+                        </div>
                     </div>
                 </div>
             </nav>
