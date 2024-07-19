@@ -1,4 +1,4 @@
-export const Currencies = [
+export const currencies = [
     {value: "INR", label: "₹ Rupee", locale: "en-IN"},
     {value: "USD", label: "$ Dollar", locale: "en-US"},
     {value: "EUR", label: "€ Euro", locale: "de-DE"}
