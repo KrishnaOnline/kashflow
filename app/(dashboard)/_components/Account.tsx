@@ -3,15 +3,31 @@ import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { MAX_DATE_RANGE } from "@/lib/constants";
 import { UserSettings } from "@prisma/client";
 import { differenceInDays, startOfMonth } from "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import StatsCards from "./StatsCards";
+import { apiConnector } from "@/lib/apiConnector";
+import { dateToUTCDate } from "@/lib/helpers";
+import { GetBalanceStatsResponseType } from "@/app/api/stats/balance/route";
 
 function Account({userSettings}:{userSettings:UserSettings}) {
     const [dateRange, setDateRange] = useState<{from:Date, to:Date}>({
         from: startOfMonth(new Date()),
         to: new Date(),
-    })
+    });
+    const [statsData, setStatsData] = useState<GetBalanceStatsResponseType>();
+    const [loading, setLoading] = useState(false);
+
+    const getStatsData = async(from:Date, to:Date) => {
+        setLoading(true);
+        const res = await apiConnector("GET", `/api/stats/balance?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}`, null, null, null);
+        console.log(res.data?.data);
+        setStatsData(res.data?.data);
+        setLoading(false);
+    }
+    useEffect(() => {
+        getStatsData(dateRange.from, dateRange.to);
+    }, [dateRange.from, dateRange.to, dateRange]);
 
 	return (
         <div className="">
@@ -30,11 +46,12 @@ function Account({userSettings}:{userSettings:UserSettings}) {
                                 return;
                             }
                             setDateRange({from, to});
+                            getStatsData(from, to);
                         }}
                     />
                 </div>
             </div>
-            <StatsCards userSettings={userSettings} from={dateRange.from} to={dateRange.to}/>
+            <StatsCards userSettings={userSettings} statsData={statsData} from={dateRange.from} to={dateRange.to}/>
         </div>
     );
 }

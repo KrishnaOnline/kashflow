@@ -11,22 +11,24 @@ import CountUp from 'react-countup';
 interface Props {
     from: Date;
     to: Date;
+    statsData: GetBalanceStatsResponseType | undefined;
     userSettings: UserSettings;
 }
 
-function StatsCards({from, to, userSettings}:Props) {
-    const [statsData, setStatsData] = useState<GetBalanceStatsResponseType>();
+function StatsCards({from, to, statsData, userSettings}:Props) {
+    // const [statsData, setStatsData] = useState<GetBalanceStatsResponseType>();
     const [loading, setLoading] = useState(false);
-    const getStatsData = async() => {
-        setLoading(true);
-        const res = await apiConnector("GET", `/api/stats/balance?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}`, null, null, null);
-        console.log(res.data?.data);
-        setStatsData(res.data?.data);
-        setLoading(false);
-    }
-    useEffect(() => {
-        getStatsData();
-    }, []);
+    // const getStatsData = async() => {
+    //     setLoading(true);
+    //     const res = await apiConnector("GET", `/api/stats/balance?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}`, null, null, null);
+    //     console.log(res.data?.data);
+    //     setStatsData(res.data?.data);
+    //     setLoading(false);
+    // }
+    // useEffect(() => {
+    //     getStatsData();
+    // }, []);
+    console.log(statsData);
 
     const formatter = () => {
         formatCurrecncy("INR");
@@ -81,12 +83,17 @@ function EachStatCard({/*formatter, */value, title, icon}:{/*formatter:Intl.Numb
     //         return formatter.format(value);
     //     }, [formatter]
     // );
+    const formatFn = (value:number) => {
+        return new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(
+            value,
+        );
+    }
 
     return (
         <Card className="flex h-24 w-full items-center gap-5 p-4">
             <div>{icon}</div>
-            <div className="flex flex-col items-center gap-0">
-                <p className="text-muted-foreground text-lg">{title}</p>
+            <div className="flex flex-col gap-0">
+                <p className="text-muted-foreground text-lg text-start">{title}</p>
                 <div className="flex items-center text-2xl">
                     <p>₹</p>
                     <CountUp
@@ -95,7 +102,7 @@ function EachStatCard({/*formatter, */value, title, icon}:{/*formatter:Intl.Numb
                         end={value}
                         decimals={2}
                         duration={1}
-                        // formattingFn={formatFn}
+                        formattingFn={formatFn}
                     />
                 </div>
             </div>
