@@ -9,7 +9,7 @@ function Welcome() {
     const [data, setData] = useState({});
     const router = useRouter();
     const addUserToDB = async () => {
-        const res = await fetch("http://localhost:3000/api/user-settings");
+        const res = await fetch("/api/user-settings");
         const response = await res.json();
         // const user = await currentUser();
         // if(!user) {

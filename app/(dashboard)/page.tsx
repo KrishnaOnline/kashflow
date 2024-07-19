@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { Minus, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
+import CreateTransactionDialog from "./_components/CreateTransactionDialog";
 
 export default async function Home() {
     const user = await currentUser();
@@ -38,18 +39,26 @@ export default async function Home() {
                 <div className="container flex flex-wrap items-center justify-between gap-6 py-8">
                     <p className="text-3xl font-bold">Hello, {getNameFromMail(user.primaryEmailAddress?.emailAddress)}! 👋</p>
                     <div className="flex gap-5 items-center justify-center">
-                        <Button className="text-white text-lg bg-green-900 border border-white hover:bg-green-800">
-                            <div className="flex items-center justify-center gap-1">
-                                <Plus/>
-                                <p>Income</p>
-                            </div>
-                        </Button>
-                        <Button className="text-white text-lg bg-red-900 border border-white hover:bg-red-800">
-                            <div className="flex items-center justify-center gap-1">
-                                <Minus/>
-                                <p>Expense</p>
-                            </div>
-                        </Button>
+                        <CreateTransactionDialog
+                            trigger={
+                                <Button className="text-black text-lg bg-green-500 hover:bg-green-600">
+                                    <div className="flex items-center justify-center gap-1">
+                                        <Plus/>
+                                        <p>Add Income</p>
+                                    </div>
+                                </Button>
+                            } type="income"
+                        />
+                        <CreateTransactionDialog
+                            trigger={
+                                <Button className="text-black text-lg bg-red-500 hover:bg-red-600">
+                                    <div className="flex items-center justify-center gap-1">
+                                        <Minus/>
+                                        <p>Add Expense</p>
+                                    </div>
+                                </Button>
+                            } type="expense"
+                        />
                     </div>
                 </div>
             </div>
