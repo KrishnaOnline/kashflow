@@ -69,7 +69,7 @@ function CreateCategoryDialog({type}: Props) {
                             name="name"
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Name *</FormLabel>
                                     <FormControl>
                                         <Input defaultValue={""} {...field}/>
                                     </FormControl>
@@ -81,7 +81,7 @@ function CreateCategoryDialog({type}: Props) {
                             name="icon"
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Icon</FormLabel>
+                                    <FormLabel>Icon *</FormLabel>
                                     <FormControl>
                                         <Popover>
                                             <PopoverTrigger asChild>

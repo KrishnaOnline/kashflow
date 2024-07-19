@@ -86,7 +86,7 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                     control={form.control}
                                     name="category"
                                     render={({field}) => (
-                                        <FormItem>
+                                        <FormItem className="flex flex-col">
                                             <FormLabel>Category *</FormLabel>
                                             <FormControl>
                                                 <CategoryPicker type={type} onChange={handleCategoryChange}/>
@@ -98,7 +98,7 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                     control={form.control}
                                     name="date"
                                     render={({field}) => (
-                                        <FormItem>
+                                        <FormItem className="flex flex-col">
                                             <FormLabel>Transaction Date *</FormLabel>
                                             <Popover>
                                                 <PopoverTrigger asChild>
@@ -112,7 +112,12 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                                     </FormControl>
                                                 </PopoverTrigger>
                                                 <PopoverContent className="w-auto p-0">
-                                                    <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus/>
+                                                    <Calendar mode="single" selected={field.value} 
+                                                        onSelect={value => {
+                                                            if(!value) return;
+                                                            field.onChange(value);
+                                                        }
+                                                    } initialFocus/>
                                                 </PopoverContent>
                                             </Popover>
                                             <FormMessage/>
@@ -122,7 +127,7 @@ function CreateTransactionDialog({trigger, type}:Props) {
                             </div>
                         </form>
                     </Form>
-                    <DialogFooter>
+                    <DialogFooter className="mt-2">
                         <DialogClose asChild>
                             <Button type="button" variant={"secondary"}
                                 onClick={() => {form.reset();}}
