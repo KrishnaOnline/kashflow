@@ -5,11 +5,11 @@ import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
+    const user = await currentUser();
+    if(!user) {
+        redirect("/sign-in");
+    }
     try {
-        const user = await currentUser();
-        if(!user) {
-            redirect("/sign-in");
-        }
         let userSettings = await prisma.userSettings.findUnique({
             where: {
                 userId: user.id,
@@ -19,6 +19,7 @@ export async function GET() {
             userSettings = await prisma.userSettings.create({
                 data: {
                     userId: user.id,
+                    email: user.primaryEmailAddress?.emailAddress,
                     // currency: "INR",
                 }
             })
@@ -27,8 +28,12 @@ export async function GET() {
         return NextResponse.json({
             data: userSettings,
         }, {status: 200});
-    } catch(err) {
+    } catch(err: any) {
         console.log(err);
-        return new NextResponse("Internal Server Error", {status: 500});
+        // return new NextResponse("Internal Server Error", {status: 500});
+        return NextResponse.json({
+            error: err?.message,
+            message: "Internal Server Error",
+        }, {status: 500});
     }
 }

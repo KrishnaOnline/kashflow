@@ -1,13 +1,21 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 function Welcome() {
+    const [data, setData] = useState({});
     const router = useRouter();
     const addUserToDB = async () => {
-        await fetch("http://localhost:3000/api/user-settings");
+        const res = await fetch("http://localhost:3000/api/user-settings");
+        const response = await res.json();
+        // const user = await currentUser();
+        // if(!user) {
+        //     addUserToDB();
+        // }
+        console.log(response);
         router.push("/");
     }
 
