@@ -14,7 +14,7 @@ datasource db {
 }
 
 model UserSettings {
-    userId String @id
+    userId String  @id
     email  String?
 }
 
@@ -32,6 +32,7 @@ model Transactions {
     id           String   @id @default(uuid())
     createdAt    DateTime @default(now())
     updatedAt    DateTime @default(now())
+    date         DateTime
     amount       Float
     description  String
     userId       String
