@@ -12,6 +12,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import { createCategory } from "@/actions/dashboard/categories";
+import toast from "react-hot-toast";
 
 interface Props {
     type: TransactionType;
@@ -25,6 +27,20 @@ function CreateCategoryDialog({type}: Props) {
             type,
         }
     });
+
+    const submitCategory = async (values:CreateCategorySchemaType) => {
+        const toastId = toast.loading("Creating...");
+        const res = await createCategory(values);
+        toast.dismiss(toastId);
+        console.log("Created Category Response: ", res);
+        form.reset({
+            name: "",
+            icon: "",
+            type,
+        });
+        toast.success("Category Created");
+        setOpen(prev => !prev);
+    }
 
 	return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -44,7 +60,7 @@ function CreateCategoryDialog({type}: Props) {
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form className="space-y-8">
+                    <form onSubmit={form.handleSubmit(submitCategory)} className="space-y-8">
                         <FormField
                             control={form.control}
                             name="name"
@@ -62,7 +78,7 @@ function CreateCategoryDialog({type}: Props) {
                             name="icon"
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Icon</FormLabel>
                                     <FormControl>
                                         <Popover>
                                             <PopoverTrigger asChild>
@@ -104,7 +120,7 @@ function CreateCategoryDialog({type}: Props) {
                                 Cancel
                         </Button>
                     </DialogClose>
-                    <Button>
+                    <Button onClick={form.handleSubmit(submitCategory)}>
                         Save
                     </Button>
                 </DialogFooter>
