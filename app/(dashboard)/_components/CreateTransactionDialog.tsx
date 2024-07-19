@@ -44,9 +44,6 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                         <FormControl>
                                             <Input defaultValue={0} type="number" {...field}/>
                                         </FormControl>
-                                        <FormDescription>
-                                            Transaction Amount (required)
-                                        </FormDescription>
                                     </FormItem>
                                 )}
                             />
@@ -59,9 +56,6 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                         <FormControl>
                                             <Input defaultValue={""} {...field}/>
                                         </FormControl>
-                                        <FormDescription>
-                                            Transaction Description (optional)
-                                        </FormDescription>
                                     </FormItem>
                                 )}
                             />
@@ -75,9 +69,6 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                             <FormControl>
                                                 <CategoryPicker type={type}/>
                                             </FormControl>
-                                            <FormDescription>
-                                                Select Category of Transaction (required)
-                                            </FormDescription>
                                         </FormItem>
                                     )}
                                 />
