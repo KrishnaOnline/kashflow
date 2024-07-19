@@ -14,10 +14,15 @@ import Image from "next/image";
 import LogoImg from "@/assets/Logo.png";
 
 
-
 function Navbar() {
+    const currPath = usePathname();
+    let toShow = false;
+    if(currPath!=="/sign-in" && currPath!=="/sign-up" && currPath!=="/sign-in/factor-one") {
+        toShow = true;
+    }
+
 	return (
-        <div>
+        <div className={`${toShow ? "block" : "hidden"}`}>
             <LargeScreenNavabar/>
             <MobileNavbar/>
         </div>
