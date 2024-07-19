@@ -33,7 +33,7 @@ export default function RootLayout({
                 <body className={inter.className}>
                     <RootProviders>
                         <Toaster/>
-                        <Navbar/>
+                        {/* <Navbar/> */}
                         {children}
                     </RootProviders>
                 </body>
