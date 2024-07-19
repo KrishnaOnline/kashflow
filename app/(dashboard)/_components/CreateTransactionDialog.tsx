@@ -2,12 +2,15 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { TransactionType } from "@/lib/types";
 import { CreateTransactionSchema, CreateTransactionSchemaType } from "@/schemas/transaction";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CategoryPicker from "./CategoryPicker";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 interface Props {
     trigger: ReactNode;
@@ -22,6 +25,10 @@ function CreateTransactionDialog({trigger, type}:Props) {
             date: new Date(),
         }
     });
+
+    const handleCategoryChange = useCallback((value:string) => {
+        form.setValue("category", value);
+    }, [form]);
 
 	return (
         <div>
@@ -67,8 +74,28 @@ function CreateTransactionDialog({trigger, type}:Props) {
                                         <FormItem>
                                             <FormLabel>Category *</FormLabel>
                                             <FormControl>
-                                                <CategoryPicker type={type}/>
+                                                <CategoryPicker type={type} onChange={handleCategoryChange}/>
                                             </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="date"
+                                    render={({field}) => (
+                                        <FormItem>
+                                            <FormLabel>Transaction Date *</FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button variant={"outline"}
+                                                            className={`w-[200px] pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                                                        >
+                                                            {field.value ? (format(field.value, "PPP")) : (<span>Pick a Date</span>)}
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                            </Popover>
                                         </FormItem>
                                     )}
                                 />

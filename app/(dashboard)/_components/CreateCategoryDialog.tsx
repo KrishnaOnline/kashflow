@@ -14,6 +14,7 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { createCategory } from "@/actions/dashboard/categories";
 import toast from "react-hot-toast";
+import { useTheme } from "next-themes";
 
 interface Props {
     type: TransactionType;
@@ -27,6 +28,8 @@ function CreateCategoryDialog({type}: Props) {
             type,
         }
     });
+
+    const theme = useTheme();
 
     const submitCategory = async (values:CreateCategorySchemaType) => {
         const toastId = toast.loading("Creating...");
@@ -98,8 +101,9 @@ function CreateCategoryDialog({type}: Props) {
                                                     }
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-full">
+                                            <PopoverContent className="w-full translate-y-28">
                                                 <Picker data={data}
+                                                    theme={theme.resolvedTheme}
                                                     onEmojiSelect={(emoji:{native:string}) => {
                                                         field.onChange(emoji.native);
                                                     }}

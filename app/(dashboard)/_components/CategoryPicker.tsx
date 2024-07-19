@@ -11,12 +11,18 @@ import { Check, ChevronsUpDown } from "lucide-react";
 
 interface Props {
     type: TransactionType;
+    onChange: (value:string) => void;
 }
 
-function CategoryPicker({type}: Props) {
+function CategoryPicker({type, onChange}: Props) {
     const [categories, setCategories] = useState<Category[]>([]);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("");
+
+    useEffect(() => {
+        if(!value) return;
+        onChange(value);
+    }, [onChange, value]);
 
     const getCategories = async () => {
         const res = await apiConnector("GET", `/api/categories?type=${type}`, null, null, null);
@@ -38,7 +44,7 @@ function CategoryPicker({type}: Props) {
                     variant={"outline"}
                     role="combobox"
                     aria-expanded={open}
-                    className="ml-5 w-[200px] justify-between"
+                    className="w-[200px] justify-between"
                 >
                     {selectedCategory ? (
                         <CategoryData category={selectedCategory} />
@@ -63,14 +69,14 @@ function CategoryPicker({type}: Props) {
                             {
                                 categories && categories.map(
                                     (category: Category) => (
-                                        <CommandItem key={category.name} onSelect={() => {
+                                        <CommandItem className="justify-between" key={category.name} onSelect={() => {
                                             setValue(category.name);
                                             setOpen(prev => !prev);
                                         }}>
                                             <CategoryData category={category}/>
-                                            {/* <Check
+                                            <Check
                                                 className={`mr-2 w-4 h-4 opacity-0 ${value===category.name && "opacity-100"}`}
-                                            /> */}
+                                            />
                                         </CommandItem>
                                     )
                                 )
