@@ -36,7 +36,7 @@ export default async function Home() {
 
 	return (
 		<div className="h-full bg-background">
-            <div className="border-b bg-card">
+            <div className="bg-card">
                 <div className="container flex flex-wrap items-center justify-between gap-6 py-8">
                     <p className="text-3xl font-bold">Hello, {getNameFromMail(user.primaryEmailAddress?.emailAddress)}! 👋</p>
                     <div className="flex gap-5 items-center justify-center">

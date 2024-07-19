@@ -2,7 +2,7 @@
 import { GetBalanceStatsResponseType } from "@/app/api/stats/balance/route";
 import { Card } from "@/components/ui/card";
 import { apiConnector } from "@/lib/apiConnector";
-import { dateToUTCDate, formatCurrecncy } from "@/lib/helpers";
+import { dateToUTCDate, formatCurrency } from "@/lib/helpers";
 import { UserSettings } from "@prisma/client";
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
@@ -30,9 +30,9 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
     // }, []);
     console.log(statsData);
 
-    const formatter = () => {
-        formatCurrecncy("INR");
-    }
+    // const formatter = () => {
+    //     formatCurrecncy("INR");
+    // }
 
     const income = statsData?.income || 0;
     const expense = statsData?.expense || 0;
@@ -83,11 +83,7 @@ function EachStatCard({/*formatter, */value, title, icon}:{/*formatter:Intl.Numb
     //         return formatter.format(value);
     //     }, [formatter]
     // );
-    const formatFn = (value:number) => {
-        return new Intl.NumberFormat('en-IN', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(
-            value,
-        );
-    }
+    // const formatFn = formatCurrency(value);
 
     return (
         <Card className="flex h-24 w-full items-center gap-5 p-4">
@@ -102,7 +98,7 @@ function EachStatCard({/*formatter, */value, title, icon}:{/*formatter:Intl.Numb
                         end={value}
                         decimals={2}
                         duration={1}
-                        formattingFn={formatFn}
+                        formattingFn={formatCurrency}
                     />
                 </div>
             </div>

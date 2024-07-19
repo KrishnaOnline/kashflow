@@ -39,9 +39,9 @@ function LargeScreenNavabar() {
     return (
         <div className="hidden md:block border-separate border-b bg-background">
             <nav className="container flex items-center justify-between px-8">
-                <div className="flex h-[70px] min-h-[60px] items-center gap-x-32">
+                <div className="flex h-[70px] min-h-[80px] items-center gap-x-32">
                     <Logo/>
-                    <div className="flex text-lg items-center gap-5">
+                    <div className="flex text-xl items-center gap-5">
                         {navItems.map(i => (
                             <NavItem key={i.item} link={i.link} label={i.item}/>
                         ))}
