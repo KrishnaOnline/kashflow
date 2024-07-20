@@ -45,11 +45,12 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
                     loading 
                     ? <div>Loading...</div>
                     :
-                    <div className="flex flex-wrap gap-5 sm:flex-nowrap">
+                    <div className="flex flex-wrap gap-3 md:flex-nowrap">
                         <EachStatCard
                             // formatter={formatter}
                             value={income}
                             title="Income"
+                            style="shadow-green-500"
                             icon={
                                 <TrendingUp className="h-16 w-16 items-center rounded-lg p-2 text-green-500 bg-green-950"/>
                             }
@@ -58,6 +59,7 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
                             // formatter={formatter}
                             value={expense}
                             title="Expense"
+                            style="shadow-red-500"
                             icon={
                                 <TrendingDown className="h-16 w-16 items-center rounded-lg p-2 text-red-500 bg-red-950"/>
                             }
@@ -66,6 +68,7 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
                             // formatter={formatter}
                             value={balance}
                             title="Balance"
+                            style="shadow-blue-500"
                             icon={
                                 <Wallet className="h-16 w-16 items-center rounded-lg p-2 text-blue-500 bg-blue-950"/>
                             }
@@ -77,7 +80,7 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
     );
 }
 
-function EachStatCard({/*formatter, */value, title, icon}:{/*formatter:Intl.NumberFormat,*/ icon: ReactNode, title: string, value: number}) {
+function EachStatCard({/*formatter, */value, title, icon, style}:{/*formatter:Intl.NumberFormat,*/ icon: ReactNode, title: string, value: number, style:string}) {
     // const formatFn = useCallback(
     //     (value:number) => {
     //         return formatter.format(value);
@@ -86,7 +89,7 @@ function EachStatCard({/*formatter, */value, title, icon}:{/*formatter:Intl.Numb
     // const formatFn = formatCurrency(value);
 
     return (
-        <Card className="flex h-24 w-full items-center gap-5 p-4">
+        <Card className={`flex ${style} shadow-md h-24 w-full items-center gap-5 p-4`}>
             <div>{icon}</div>
             <div className="flex flex-col gap-0">
                 <p className="text-muted-foreground text-lg text-start">{title}</p>

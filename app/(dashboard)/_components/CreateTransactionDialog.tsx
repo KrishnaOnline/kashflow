@@ -15,6 +15,7 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { createTransaction } from "@/actions/dashboard/transactions";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface Props {
     trigger: ReactNode;
@@ -23,6 +24,7 @@ interface Props {
 
 function CreateTransactionDialog({trigger, type}:Props) {
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     const form = useForm<CreateTransactionSchemaType>({
         resolver: zodResolver(CreateTransactionSchema),
@@ -43,6 +45,8 @@ function CreateTransactionDialog({trigger, type}:Props) {
         toast.success("Transaction Added");
         setOpen(prev => !prev);
         console.log(res);
+        // await router.refresh();
+        location.reload();
     }
 
 	return (
