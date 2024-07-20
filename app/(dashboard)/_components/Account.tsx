@@ -9,15 +9,17 @@ import StatsCards from "./StatsCards";
 import { apiConnector } from "@/lib/apiConnector";
 import { dateToUTCDate } from "@/lib/helpers";
 import { GetBalanceStatsResponseType } from "@/app/api/stats/balance/route";
+import CategoryStats from "./CategoryStats";
+import { GetCategoryStatsResponseType } from "@/app/api/stats/categories/route";
 
 function Account({userSettings}:{userSettings:UserSettings}) {
     const [dateRange, setDateRange] = useState<{from:Date, to:Date}>({
         from: startOfMonth(new Date()),
         to: new Date(),
     });
+
     const [statsData, setStatsData] = useState<GetBalanceStatsResponseType>();
     const [loading, setLoading] = useState(false);
-
     const getStatsData = async(from:Date, to:Date) => {
         setLoading(true);
         const res = await apiConnector("GET", `/api/stats/balance?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}`, null, null, null);
@@ -25,8 +27,16 @@ function Account({userSettings}:{userSettings:UserSettings}) {
         setStatsData(res.data?.data);
         setLoading(false);
     }
+    const [categoryStatsData, setCategoryStatsData] = useState<GetCategoryStatsResponseType>();
+    const getCategoryStatsData = async(from:Date, to:Date) => {
+        const res = await apiConnector("GET", `api/stats/categories?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}`, null, null, null);
+        console.log(res.data?.date);
+        setCategoryStatsData(res.data?.data);
+    }
+
     useEffect(() => {
         getStatsData(dateRange.from, dateRange.to);
+        getCategoryStatsData(dateRange.from, dateRange.to);
     }, [dateRange.from, dateRange.to, dateRange]);
 
 	return (
@@ -47,11 +57,13 @@ function Account({userSettings}:{userSettings:UserSettings}) {
                             }
                             setDateRange({from, to});
                             getStatsData(from, to);
+                            getCategoryStatsData(from, to);
                         }}
                     />
                 </div>
             </div>
             <StatsCards userSettings={userSettings} statsData={statsData} from={dateRange.from} to={dateRange.to}/>
+            <CategoryStats userSettings={userSettings} categoryStatsData={categoryStatsData} from={dateRange.from} to={dateRange.to}/>
         </div>
     );
 }
