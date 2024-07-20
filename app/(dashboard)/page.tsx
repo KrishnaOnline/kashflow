@@ -6,6 +6,7 @@ import { Minus, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import CreateTransactionDialog from "./_components/CreateTransactionDialog";
 import Account from "./_components/Account";
+import History from "./_components/History";
 
 export default async function Home() {
     const user = await currentUser();
@@ -65,6 +66,7 @@ export default async function Home() {
             </div>
             <div>
                 <Account userSettings={userSettings}/>
+                <History userSettings={userSettings}/>
             </div>
         </div>
 	);
