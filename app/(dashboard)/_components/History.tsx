@@ -12,7 +12,7 @@ import CountUp from "react-countup";
 import { formatCurrency } from "@/lib/helpers";
 
 function History({userSettings}:{userSettings:UserSettings}) {
-    const [timeFrame, setTimeFrame] = useState<TimeFrame>("month");
+    const [timeFrame, setTimeFrame] = useState<TimeFrame>("year");
     const [period, setPeriod] = useState<Period>({
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
@@ -24,9 +24,9 @@ function History({userSettings}:{userSettings:UserSettings}) {
         console.log(res.data?.data);
         setHistoryData(res.data?.data);
     }
-    useEffect(() => {
-        getHistoryData();
-    }, [])
+    // useEffect(() => {
+    //     getHistoryData();
+    // }, [])
     useEffect(() => {
         getHistoryData();
     }, [timeFrame, period])
@@ -34,9 +34,9 @@ function History({userSettings}:{userSettings:UserSettings}) {
     const isDataAvailable = historyData && historyData.length>0;
 
 	return (
-        <div className="container">
-            <p className="mt-12 text-3xl font-bold">Tranactions History</p>
-            <Card className="col-span-12 mt-2 w-full">
+        <div className="container mb-10">
+            <p className="mt-12 mb-3 text-3xl font-bold">Tranactions History</p>
+            <Card className="col-span-12 mt-2 shadow-yellow-500 shadow-md w-full">
                 <CardHeader className="gap-2">
                     <CardTitle className="grid grid-flow-row justify-between gap-2 md:grid-flow-col">
                         <HistoryPeriodSelector period={period} setPeriod={setPeriod} timeFrame={timeFrame} setTimeFrame={setTimeFrame}/>

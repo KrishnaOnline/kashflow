@@ -32,7 +32,7 @@ function Navbar() {
 const navItems = [
     {item: "Dashboard", link: "/"},
     {item: "Transactions", link: "/transactions"},
-    {item: "Manage", link: "/manage"},
+    {item: "Settings", link: "/settings"},
 ]
 
 function LargeScreenNavabar() {

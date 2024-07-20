@@ -41,9 +41,9 @@ function HistoryPeriodSelector({period, setPeriod, timeFrame, setTimeFrame}:Prop
                 {timeFrame==="month" && (
                     <MonthSelector period={period} setPeriod={setPeriod}/>
                 )}
-                <div>
+                {timeFrame==="year" && <div>
                     <YearSelector period={period} setPeriod={setPeriod} years={historyPeriods || []}/>
-                </div>
+                </div>}
             </div>
         </div>
     );
