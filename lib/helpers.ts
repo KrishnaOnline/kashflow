@@ -14,6 +14,14 @@ export function dateToUTCDate(date: Date) {
     )
 }
 
+export const formatDate = (date: Date): string => {
+    const newDate = new Date(date);
+    const day = String(newDate.getDate()).padStart(2, '0');
+    const month = String(newDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = newDate.getFullYear();
+    return `${day}-${month}-${year}`;
+};
+
 // export function formatCurrecncy(currency:string) {
 //     // const locale = currencies.find(c => c.value===currency)?.locale;
 //     // return new Intl.NumberFormat(locale, {

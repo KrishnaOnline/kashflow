@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 		const from = searchParams.get("from");
 		const to = searchParams.get("to");
 		const page = parseInt(searchParams.get("page") || "0");
-		const pageSize = parseInt(searchParams.get("pageSize") || "5");
+		const pageSize = parseInt(searchParams.get("pageSize") || "10");
 
 		const queryParams = AccountQuerySchema.safeParse({ from, to });
 		if (!queryParams.success) {
