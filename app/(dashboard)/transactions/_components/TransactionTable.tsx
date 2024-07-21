@@ -92,7 +92,7 @@ function TransactionTable({from, to}:Props) {
             {
                 isDataAvailable ?
                 <div className="flex mt-5 justify-center gap-5">
-                    <Button className="flex gap-2 text-lg" onClick={() => {
+                    <Button disabled={page===0} className="flex gap-2 text-lg" onClick={() => {
                         if(page!==0) {
                             setPage(page-1);
                             console.log(page);
@@ -101,8 +101,8 @@ function TransactionTable({from, to}:Props) {
                         <ArrowLeft/>
                         <p>Previous</p>
                     </Button>
-                    <Button className="flex gap-2 text-lg" onClick={() => {
-                        if(page<history.length/10) {
+                    <Button disabled={page>history.length/10 || history.length<10} className={`${""} flex gap-2 text-lg`} onClick={() => {
+                        if(page<=history.length/10 || history.length>10) {
                             setPage(page+1);
                             console.log(page);
                         }
