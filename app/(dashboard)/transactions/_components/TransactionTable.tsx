@@ -6,7 +6,8 @@ import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { GoTrash } from "react-icons/go";
-import { ArrowLeft, ArrowRight, MoveLeft } from "lucide-react";
+import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ChevronDown, ChevronsDown, ChevronsUp, ChevronUp, MoveDown, MoveLeft, MoveUp } from "lucide-react";
 import { deleteTransaction } from "@/actions/transactions/deleteTransactions";
 
 interface Props {
@@ -54,14 +55,19 @@ function TransactionTable({from, to}:Props) {
                 <TableBody className="text-[16px]">
                     {
                         isDataAvailable &&
-                        history?.map((item:any) => {
+                        history?.map((item:any, i) => {
                             return (
                                 <TableRow className={`${item.type==="income" ? "hover:bg-green-950" : "hover:bg-red-950"}`} key={item.id}>
                                     {/* {item.categoryIcon} {item.category} {item.type} {item.formattedAmount} {item.date} */}
                                     <TableCell className="border border-l-0">{item.categoryIcon} {item.category}</TableCell>
                                     <TableCell className="border">{item.description ? item.description : "-"}</TableCell>
                                     <TableCell className="border">{formatDate(item.date)}</TableCell>
-                                    <TableCell className={`font-bold text-[18px] border ${item.type==="income" ? "text-green-500" : "text-red-500"}`}>{item.type==="income" ? "Income" : "Expense"}</TableCell>
+                                    <TableCell className={`border ${item.type==="income" ? "text-green-500" : "text-red-500"}`}>
+                                        <div className="flex items-center">
+                                            <p>{item.type==="income" ? <IoIosArrowRoundUp className="text-2xl"/> : <IoIosArrowRoundDown className="text-2xl"/>}</p>
+                                            <p className="pl-[3px] font-medium text-[18px]">{item.type==="income" ? "Income" : "Expense"}</p>
+                                        </div>
+                                    </TableCell>
                                     <TableCell className="border">₹{item.formattedAmount}</TableCell>
                                     {/* <TableCell className="flex border justify-center">
                                         <Button onClick={() => handleDeleteTxn(item.id)} className="bg-red-900 hover:bg-red-500 text-white">

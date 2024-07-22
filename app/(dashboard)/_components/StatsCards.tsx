@@ -4,9 +4,10 @@ import { Card } from "@/components/ui/card";
 import { apiConnector } from "@/lib/apiConnector";
 import { dateToUTCDate, formatCurrency } from "@/lib/helpers";
 import { UserSettings } from "@prisma/client";
-import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
+import { ArrowBigDown, ArrowBigUp, ChevronsDown, ChevronsUp, TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import CountUp from 'react-countup';
+
 
 interface Props {
     from: Date;
@@ -52,7 +53,7 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
                             title="Income"
                             style="shadow-green-500"
                             icon={
-                                <TrendingUp className="h-16 w-16 items-center rounded-lg p-2 text-green-500 bg-green-950"/>
+                                <ChevronsUp className="h-16 w-16 items-center rounded-lg p-2 text-green-500 bg-green-950"/>
                             }
                         />
                         <EachStatCard
@@ -61,7 +62,7 @@ function StatsCards({from, to, statsData, userSettings}:Props) {
                             title="Expense"
                             style="shadow-red-500"
                             icon={
-                                <TrendingDown className="h-16 w-16 items-center rounded-lg p-2 text-red-500 bg-red-950"/>
+                                <ChevronsDown className="h-16 w-16 items-center rounded-lg p-2 text-red-500 bg-red-950"/>
                             }
                         />
                         <EachStatCard

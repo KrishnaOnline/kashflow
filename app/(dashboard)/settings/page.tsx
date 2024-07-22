@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiConnector } from "@/lib/apiConnector";
 import { TransactionType } from "@/lib/types";
 import { Category } from "@prisma/client";
-import { PlusSquare, TrashIcon, TrendingDown, TrendingUp } from "lucide-react";
+import { ChevronsDown, ChevronsUp, PlusSquare, TrashIcon, TrendingDown, TrendingUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import CreateCategoryDialog from "../_components/CreateCategoryDialog";
 import { Button } from "@/components/ui/button";
@@ -50,8 +50,8 @@ function CategoryList({type}:{type:TransactionType}) {
                     <CardTitle className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-5">
                             {type==="income" 
-                                ? <TrendingUp className="h-16 w-16 items-center rounded-lg p-2 text-green-500 bg-green-950"/> 
-                                : <TrendingDown className="h-16 w-16 items-center rounded-lg p-2 text-red-500 bg-red-950"/>
+                                ? <ChevronsUp className="h-16 w-16 items-center rounded-lg p-2 text-green-500 bg-green-950"/> 
+                                : <ChevronsDown className="h-16 w-16 items-center rounded-lg p-2 text-red-500 bg-red-950"/>
                             }
                             <div className="flex flex-col gap-1">
                                 {type==="income" ? "Income" : "Expenses"} categories
