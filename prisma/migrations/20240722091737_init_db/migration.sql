@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "UserSettings" (
     "userId" TEXT NOT NULL,
-    "currency" TEXT NOT NULL,
+    "email" TEXT,
 
     CONSTRAINT "UserSettings_pkey" PRIMARY KEY ("userId")
 );
@@ -20,6 +20,7 @@ CREATE TABLE "Transactions" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "date" TIMESTAMP(3) NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "description" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
