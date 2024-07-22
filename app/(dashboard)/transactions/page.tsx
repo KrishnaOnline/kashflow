@@ -57,8 +57,8 @@ function TransactionsPage() {
                     <div>
                         <p className="text-3xl font-bold">Transactions History</p>
                     </div>
-                    <div className="flex items-center gap-4">
-                    <Popover open={open2} onOpenChange={setOpen2}>
+                    <div className="flex flex-wrap items-center gap-4">
+                        <Popover open={open2} onOpenChange={setOpen2}>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant={"outline"}
