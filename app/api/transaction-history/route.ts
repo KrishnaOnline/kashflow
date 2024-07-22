@@ -15,6 +15,7 @@ export async function GET(request: Request) {
 		const from = searchParams.get("from");
 		const to = searchParams.get("to");
         const categ = searchParams.get("categ" || "");
+        const type = searchParams.get("type" || "");
 		const page = parseInt(searchParams.get("page") || "0");
 		const pageSize = parseInt(searchParams.get("pageSize") || "10");
 
@@ -36,6 +37,7 @@ export async function GET(request: Request) {
 				queryParams.data.from,
 				queryParams.data.to,
                 categ,
+                type,
 				page,
 				pageSize
 			);
@@ -61,6 +63,7 @@ async function getTransactionsHistory(
 	from: Date,
 	to: Date,
     categ: any,
+    type: any,
 	page: number,
 	pageSize: number
 ) {
@@ -80,7 +83,8 @@ async function getTransactionsHistory(
 				gte: from,
 				lte: to,
 			},
-            ...(categ!=="" && {category: categ})
+            ...(categ!=="" && {category: categ}),
+            ...(type!=="" && {type: type})
 		},
 		orderBy: {
 			date: "desc",

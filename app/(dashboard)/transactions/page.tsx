@@ -24,16 +24,20 @@ import {
 import { Category } from "@prisma/client";
 import { apiConnector } from "@/lib/apiConnector";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { TransactionType } from "@/lib/types";
 
 
 function TransactionsPage() {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
+    const [open2, setOpen2] = React.useState(false);
+    const [value2, setValue2] = React.useState("");
     const [dateRange, setDateRange] = useState<{from:Date, to:Date}>({
         from: startOfMonth(new Date()),
         to: new Date(),
     });
     const [categories, setCategories] = useState<Category[]>([]);
+    const types:string[] = ["all", "income", "expense"];
     const getCategories = async () => {
         const res = await apiConnector("GET", `/api/categories`, null, null, null);
         console.log(res.data?.data);
@@ -54,6 +58,54 @@ function TransactionsPage() {
                         <p className="text-3xl font-bold">Transactions History</p>
                     </div>
                     <div className="flex items-center gap-4">
+                    <Popover open={open2} onOpenChange={setOpen2}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant={"outline"}
+                                    role="combobox"
+                                    aria-expanded={open2}
+                                    className="w-[200px] justify-between"
+                                >
+                                    {selectedType ? (
+                                        <TypeData type={selectedType} />
+                                    ) : (
+                                        "Filter by Type"
+                                    )}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[200px] p-0">
+                                <Command onSubmit={e => e.preventDefault()}>
+                                    <CommandInput placeholder="Search Type..."/>
+                                    <CommandEmpty>
+                                        <p>Category Not Found</p>
+                                        <p className="text-xs text-muted-foreground">
+                                            Create a New category
+                                        </p>
+                                    </CommandEmpty>
+                                    <CommandGroup>
+                                        <CommandList>
+                                            {
+                                                types && types.map(
+                                                    (type: string) => (
+                                                        <CommandItem className="justify-between" key={type} onSelect={() => {
+                                                            setValue2(type);
+                                                            setSelectType(type);
+                                                            setOpen2(prev => !prev);
+                                                        }}>
+                                                            <TypeData type={type}/>
+                                                            <Check
+                                                                className={`mr-2 w-4 h-4 opacity-0 ${value===type && "opacity-100"}`}
+                                                            />
+                                                        </CommandItem>
+                                                    )
+                                                )
+                                            }
+                                        </CommandList>
+                                    </CommandGroup>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                         <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
                                 <Button
@@ -122,7 +174,7 @@ function TransactionsPage() {
                 </div>
             </div>
             <div className="container">
-                <TransactionTable selectedCategory={selectedCategory?.name || ""} from={dateRange.from} to={dateRange.to}/>
+                <TransactionTable selectedType={selectedType || ""} selectedCategory={selectedCategory?.name || ""} from={dateRange.from} to={dateRange.to}/>
             </div>
         </div>
     );
@@ -134,6 +186,12 @@ function CategoryData({category}:{category:Category}) {
             <span role="img">{category.icon}</span>
             <span>{category.name}</span>
         </div>
+    )
+}
+
+function TypeData({type}:{type:string}) {
+    return (
+        <div className={`${type==="income" && "text-green-500"} ${type==="expense" && "text-red-500"} ${type==="all" && "text-blue-500"}`}>{type}</div>
     )
 }
 

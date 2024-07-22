@@ -14,26 +14,27 @@ import { Category } from "@prisma/client";
 interface Props {
     from:Date;
     to:Date;
-    selectedCategory:any
+    selectedType: string;
+    selectedCategory:any;
 }
 
 // type TransactionsHistory = GetTransactionsHistoryResponseType[0];
 
-function TransactionTable({from, to, selectedCategory}:Props) {
+function TransactionTable({from, to, selectedType, selectedCategory}:Props) {
 	const [history, setHistory] = useState<any>([]);
     const [page, setPage] = useState<number>(0);
     const [loading, setLoading] = useState(false);
     const getTransactionsHistory = async () => {
         setLoading(true);
         console.log(typeof selectedCategory);
-        const res = await apiConnector("GET", `/api/transaction-history?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}&page=${page}&categ=${selectedCategory}`, null, null, null);
+        const res = await apiConnector("GET", `/api/transaction-history?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}&page=${page}&categ=${selectedCategory}&type=${selectedType!=="all" ? selectedType : ""}`, null, null, null);
         console.log(res.data?.data);
         setHistory(res.data?.data);
         setLoading(false);
     }
     useEffect(() => {
         getTransactionsHistory();
-    }, [from, to, page, selectedCategory]);
+    }, [from, to, page, selectedCategory, selectedType]);
 
     const handleDeleteTxn = async (id:string) => {
         await deleteTransaction(id);
