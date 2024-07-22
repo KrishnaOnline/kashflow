@@ -15,8 +15,8 @@ export async function GET(request: Request) {
 		const { searchParams } = new URL(request.url);
 		const from = searchParams.get("from");
 		const to = searchParams.get("to");
-        const categ = searchParams.get("categ" || "");
-        const type = searchParams.get("type" || "");
+        const categ = searchParams.get("categ") || "";
+        const type = searchParams.get("type") || "";
 		const page = parseInt(searchParams.get("page") || "0");
 		const pageSize = parseInt(searchParams.get("pageSize") || "10");
 
@@ -63,8 +63,8 @@ async function getTransactionsHistory(
 	userId: string,
 	from: Date,
 	to: Date,
-    categ: any,
-    type: any,
+    categ: string,
+    type: string,
 	page: number,
 	pageSize: number
 ) {
@@ -90,7 +90,7 @@ async function getTransactionsHistory(
 		orderBy: {
 			date: "desc",
 		},
-		skip: page * pageSize,
+		skip: page*pageSize,
 		take: pageSize,
 	});
 
