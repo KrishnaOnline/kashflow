@@ -1,22 +1,23 @@
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export async function GET(request:Request) {
     try {
         const user = await currentUser();
         if(!user) {
-            redirect("/sign-in");
+            return redirect("/sign-in");
         }
         const periods = await getHistoryPeriods(user.id);
-        return Response.json({
+        return NextResponse.json({
             data: periods,
         })
     } catch(err) {
         console.log(err);
-        return Response.json({
+        return NextResponse.json({
             error: err,
-        })
+        }, {status: 500})
     }
 }
 

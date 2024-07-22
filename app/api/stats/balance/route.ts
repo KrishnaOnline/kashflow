@@ -2,30 +2,31 @@ import prisma from "@/lib/prisma";
 import { AccountQuerySchema } from "@/schemas/account";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export async function GET(request:Request) {
     try {
         const user = await currentUser();
         if(!user) {
-            redirect("/sign-in");
+            return redirect("/sign-in");
         }
         const {searchParams} = new URL(request.url);
         const from = searchParams.get("from");
         const to = searchParams.get("to");
         const queryParams = AccountQuerySchema.safeParse({from, to});
         if(!queryParams.success) {
-            return Response.json(queryParams.error.message, {status: 400});
+            return NextResponse.json(queryParams.error.message, {status: 400});
         }
         const stats = await getBalanceStats(user.id, queryParams.data.from, queryParams.data.to);
 
-        return Response.json({
+        return NextResponse.json({
             data: stats,
         });
     } catch(err) {
         console.log(err);
-        return Response.json({
+        return NextResponse.json({
             error: err,
-        })
+        }, {status: 500})
     }
 }
 

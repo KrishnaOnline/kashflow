@@ -3,12 +3,13 @@ import prisma from "@/lib/prisma";
 import { AccountQuerySchema } from "@/schemas/account";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
 	try {
 		const user = await currentUser();
 		if (!user) {
-			redirect("/sign-in");
+			return redirect("/sign-in");
 		}
 
 		const { searchParams } = new URL(request.url);
@@ -23,7 +24,7 @@ export async function GET(request: Request) {
 
 		const queryParams = AccountQuerySchema.safeParse({ from, to });
 		if (!queryParams.success) {
-			return Response.json(
+			return NextResponse.json(
 				{
 					error: queryParams.error.message,
 				},
@@ -42,15 +43,15 @@ export async function GET(request: Request) {
 				pageSize
 			);
 
-		return Response.json({
+		return NextResponse.json({
 			data: transactions,
 			totalTransactions,
 		});
 	} catch (err) {
 		console.log(err);
-		return Response.json({
+		return NextResponse.json({
 			error: err,
-		});
+		}, {status: 500});
 	}
 }
 

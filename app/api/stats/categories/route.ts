@@ -2,12 +2,13 @@ import prisma from "@/lib/prisma";
 import { AccountQuerySchema } from "@/schemas/account";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export async function GET(request:Request) {
     try {
         const user = await currentUser();
         if(!user) {
-            redirect("/sign-in");
+            return redirect("/sign-in");
         }
         const {searchParams} = new URL(request.url);
         const from = searchParams.get("from");
@@ -17,14 +18,14 @@ export async function GET(request:Request) {
             throw new Error(queryParams.error.message);
         }
         const stats = await getCategoryStats(user.id, queryParams.data.from, queryParams.data.to);
-        return Response.json({
+        return NextResponse.json({
             data: stats,
         })
     } catch(err) {
         console.log(err);
-        return Response.json({
+        return NextResponse.json({
             error: err,
-        })
+        }, {status: 500})
     }
 }
 

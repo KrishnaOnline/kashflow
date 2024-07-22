@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
     const user = await currentUser();
     if(!user) {
-        redirect("/sign-in");
+        return redirect("/sign-in");
     }
     try {
         let userSettings = await prisma.userSettings.findUnique({
