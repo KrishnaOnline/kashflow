@@ -11,7 +11,6 @@ export async function GET(request: Request) {
         }
         const {searchParams} = new URL(request.url);
         const paramType = searchParams.get("type");
-        // const categName = searchParams.get("categ");
         const validator = z.enum(["expense", "income"]).nullable();
         const queryParams = validator.safeParse(paramType);
         if(!queryParams.success) {
@@ -23,7 +22,6 @@ export async function GET(request: Request) {
             where: {
                 userId: user.id,
                 ...(type && {type}),   // include type in filters, if defined
-                // name: catName,
             },
             orderBy: {
                 name: "asc",

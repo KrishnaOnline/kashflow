@@ -8,55 +8,43 @@ import TransactionTable from "./_components/TransactionTable";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { Category } from "@prisma/client";
 import { apiConnector } from "@/lib/apiConnector";
+import { Check, ChevronsUpDown } from "lucide-react";
 
 
 function TransactionsPage() {
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState("");
+    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState("");
     const [dateRange, setDateRange] = useState<{from:Date, to:Date}>({
         from: startOfMonth(new Date()),
         to: new Date(),
     });
-
     const [categories, setCategories] = useState<Category[]>([]);
     const getCategories = async () => {
-        const res = await apiConnector("GET", `/api/categories?type=${type}`, null, null, null);
+        const res = await apiConnector("GET", `/api/categories`, null, null, null);
         console.log(res.data?.data);
         setCategories(res.data?.data);
     }
     useEffect(() => {
         getCategories();
-    }, []);
-    const selectedCategory = categories.find(
-        (category: Category) => category.name===value
-    );
-    
-    const frameworks = [
-        {
-          value: "next.js",
-          label: "Next.js",
-        },
-        {
-          value: "sveltekit",
-          label: "SvelteKit",
-        },
-        {
-          value: "nuxt.js",
-          label: "Nuxt.js",
-        },
-        {
-          value: "remix",
-          label: "Remix",
-        },
-        {
-          value: "astro",
-          label: "Astro",
-        },
-    ]
+    }, [])
+
+    const [selectedCategory, setSelectCategory] = useState<Category>();
+    const [selectedType, setSelectType] = useState<string>("");
 
 	return (
         <div>
@@ -69,41 +57,48 @@ function TransactionsPage() {
                         <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
                                 <Button
-                                    variant="outline"
+                                    variant={"outline"}
                                     role="combobox"
                                     aria-expanded={open}
                                     className="w-[200px] justify-between"
                                 >
-                                {value
-                                    ? frameworks.find((framework) => framework.value === value)?.label
-                                    : "Select framework..."}
-                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    {selectedCategory ? (
+                                        <CategoryData category={selectedCategory} />
+                                    ) : (
+                                        "Filter by Category"
+                                    )}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-[200px] p-0">
-                                <Command>
-                                <CommandInput placeholder="Search framework..." className="h-9" />
-                                <CommandEmpty>No framework found.</CommandEmpty>
-                                <CommandGroup>
-                                    {frameworks.map((framework) => (
-                                    <CommandItem
-                                        key={framework.value}
-                                        value={framework.value}
-                                        onSelect={(currentValue) => {
-                                        setValue(currentValue === value ? "" : currentValue)
-                                        setOpen(false)
-                                        }}
-                                    >
-                                        {framework.label}
-                                        <CheckIcon
-                                        className={cn(
-                                            "ml-auto h-4 w-4",
-                                            value === framework.value ? "opacity-100" : "opacity-0"
-                                        )}
-                                        />
-                                    </CommandItem>
-                                    ))}
-                                </CommandGroup>
+                                <Command onSubmit={e => e.preventDefault()}>
+                                    <CommandInput placeholder="Search Category..."/>
+                                    <CommandEmpty>
+                                        <p>Category Not Found</p>
+                                        <p className="text-xs text-muted-foreground">
+                                            Create a New category
+                                        </p>
+                                    </CommandEmpty>
+                                    <CommandGroup>
+                                        <CommandList>
+                                            {
+                                                categories && categories.map(
+                                                    (category: Category) => (
+                                                        <CommandItem className="justify-between" key={category.name} onSelect={() => {
+                                                            setValue(category.name);
+                                                            setSelectCategory(category);
+                                                            setOpen(prev => !prev);
+                                                        }}>
+                                                            <CategoryData category={category}/>
+                                                            <Check
+                                                                className={`mr-2 w-4 h-4 opacity-0 ${value===category.name && "opacity-100"}`}
+                                                            />
+                                                        </CommandItem>
+                                                    )
+                                                )
+                                            }
+                                        </CommandList>
+                                    </CommandGroup>
                                 </Command>
                             </PopoverContent>
                         </Popover>
@@ -127,10 +122,19 @@ function TransactionsPage() {
                 </div>
             </div>
             <div className="container">
-                <TransactionTable from={dateRange.from} to={dateRange.to}/>
+                <TransactionTable selectedCategory={selectedCategory?.name || ""} from={dateRange.from} to={dateRange.to}/>
             </div>
         </div>
     );
+}
+
+function CategoryData({category}:{category:Category}) {
+    return (
+        <div className="">
+            <span role="img">{category.icon}</span>
+            <span>{category.name}</span>
+        </div>
+    )
 }
 
 export default TransactionsPage;

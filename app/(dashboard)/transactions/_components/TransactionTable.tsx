@@ -9,28 +9,31 @@ import { GoTrash } from "react-icons/go";
 import { IoIosArrowRoundUp, IoIosArrowRoundDown } from "react-icons/io";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ChevronDown, ChevronsDown, ChevronsUp, ChevronUp, MoveDown, MoveLeft, MoveUp } from "lucide-react";
 import { deleteTransaction } from "@/actions/transactions/deleteTransactions";
+import { Category } from "@prisma/client";
 
 interface Props {
     from:Date;
     to:Date;
+    selectedCategory:any
 }
 
 // type TransactionsHistory = GetTransactionsHistoryResponseType[0];
 
-function TransactionTable({from, to}:Props) {
+function TransactionTable({from, to, selectedCategory}:Props) {
 	const [history, setHistory] = useState<any>([]);
     const [page, setPage] = useState<number>(0);
     const [loading, setLoading] = useState(false);
     const getTransactionsHistory = async () => {
         setLoading(true);
-        const res = await apiConnector("GET", `/api/transaction-history?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}&page=${page}`, null, null, null);
+        console.log(typeof selectedCategory);
+        const res = await apiConnector("GET", `/api/transaction-history?from=${dateToUTCDate(from)}&to=${dateToUTCDate(to)}&page=${page}&categ=${selectedCategory}`, null, null, null);
         console.log(res.data?.data);
         setHistory(res.data?.data);
         setLoading(false);
     }
     useEffect(() => {
         getTransactionsHistory();
-    }, [from, to, page]);
+    }, [from, to, page, selectedCategory]);
 
     const handleDeleteTxn = async (id:string) => {
         await deleteTransaction(id);
@@ -55,7 +58,7 @@ function TransactionTable({from, to}:Props) {
                 <TableBody className="text-[16px]">
                     {
                         isDataAvailable &&
-                        history?.map((item:any, i) => {
+                        history?.map((item:any) => {
                             return (
                                 <TableRow className={`${item.type==="income" ? "hover:bg-green-950" : "hover:bg-red-950"}`} key={item.id}>
                                     {/* {item.categoryIcon} {item.category} {item.type} {item.formattedAmount} {item.date} */}

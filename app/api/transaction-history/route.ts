@@ -14,8 +14,11 @@ export async function GET(request: Request) {
 		const { searchParams } = new URL(request.url);
 		const from = searchParams.get("from");
 		const to = searchParams.get("to");
+        const categ = searchParams.get("categ" || "");
 		const page = parseInt(searchParams.get("page") || "0");
 		const pageSize = parseInt(searchParams.get("pageSize") || "10");
+
+        console.log(categ);
 
 		const queryParams = AccountQuerySchema.safeParse({ from, to });
 		if (!queryParams.success) {
@@ -32,6 +35,7 @@ export async function GET(request: Request) {
 				user.id,
 				queryParams.data.from,
 				queryParams.data.to,
+                categ,
 				page,
 				pageSize
 			);
@@ -56,6 +60,7 @@ async function getTransactionsHistory(
 	userId: string,
 	from: Date,
 	to: Date,
+    categ: any,
 	page: number,
 	pageSize: number
 ) {
@@ -75,6 +80,7 @@ async function getTransactionsHistory(
 				gte: from,
 				lte: to,
 			},
+            ...(categ!=="" && {category: categ})
 		},
 		orderBy: {
 			date: "desc",
