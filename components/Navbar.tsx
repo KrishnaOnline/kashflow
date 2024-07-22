@@ -52,7 +52,7 @@ function LargeScreenNavabar() {
                         <Button className="text-lg">About</Button>
                     </Link>
                     <div className="flex items-center gap-3">
-                        <ThemeSwitcher/>
+                        {/* <ThemeSwitcher/> */}
                         <UserButton/>
                     </div>
                 </div>
@@ -100,7 +100,7 @@ function MobileNavbar() {
                             <Button className="">About</Button>
                         </Link>
                         <div className="flex items-center gap-2">
-                            <ThemeSwitcher/>
+                            {/* <ThemeSwitcher/> */}
                             <UserButton/>
                         </div>
                     </div>
